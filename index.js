@@ -1,8 +1,9 @@
 
 
 const askUser = require('./lib/prompts');
-const createFile = require('./lib/createFile');
-const {Shapes, Circle, Triangle, Square, createShapeConstructor} = require('./lib/shapes');
+
+const {createShapeConstructor} = require('./lib/shapes');
+const {createFile, textSvg, writeSvg} = require('./lib/createFile');
 
 
 
@@ -11,7 +12,17 @@ function init () {
 		.then((data) => {
 			const shape = createShapeConstructor(data)
 			shape.setColor(data.shapeColor);
-			shape.render();
+			const renderedShape = shape.render()
+			const renderedText = textSvg(data)
+
+			return {renderedShape, renderedText};
+		})
+		.then((results) => {
+			const {renderedShape, renderedText} = results
+			return writeSvg(renderedShape, renderedText);
+		})
+		.then((finalSvg) => {
+			createFile(finalSvg);
 		})
 }
 
