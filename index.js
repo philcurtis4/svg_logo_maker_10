@@ -23,6 +23,7 @@ function init () {
 		})
 		.then((finalSvg) => {
 			createFile(finalSvg);
+			console.log('Generated logo.svg');
 		})
 }
 
